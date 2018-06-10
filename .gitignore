@@ -1,0 +1,7 @@
+*~
+.DS_Store
+.tmp/
+.idea/
+.vscode/
+**/node_modules
+**/.sass-cache
