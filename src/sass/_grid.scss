@@ -1,0 +1,97 @@
+
+// Grid Config
+$containerWidth:  1200px;
+$numberOfCols:    12;
+$gutterSize:      1rem; // "rem", "em", "px" or "%"
+
+$breakpoints: (
+  md: 720px,
+  sm: 480px,
+  xs: 280px
+);
+
+*, *:before, *:after {
+  box-sizing: border-box;
+}
+
+// Container wrapper
+.container {
+  position: relative;
+  width: 100%;
+  max-width: $containerWidth;
+  margin: 0 auto;
+  padding: 0 20px;
+  &:before, &:after {content: "";display: table;clear: both;}
+}
+
+// Grid "wrapper"
+.grid {
+  width: 100%;
+
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}
+
+//Gutter function
+.gutter, .gap {
+  margin-left: -$gutterSize;
+  width: calc(100% + #{$gutterSize});
+
+  [class*='col'] {
+    padding-left: $gutterSize;
+    padding-top: $gutterSize;
+  }
+}
+
+// Float cols
+[class*='col'] {
+  float:left;
+  min-height: 1px;
+}
+
+// center col - helper
+.colCenter {float:none; margin: 0 auto;}
+
+// Generate cols
+@for $i from 1 through $numberOfCols {
+  .col#{$i} {
+    width: 100% / $numberOfCols * $i;
+  }
+  [class~='offset-col#{$i}'] {
+  margin-left: 100% / $numberOfCols * $i;
+  }
+}
+
+@each $media, $size in ($breakpoints) {
+  @media (max-width: $size) {
+    @for $i from 1 through $numberOfCols {
+
+      [class~='col#{$i}@#{$media}'] {
+        width: 100% / $numberOfCols * $i;
+      }
+
+      [class~='offset-col#{$i}@#{$media}'] {
+        margin-left: 100% / $numberOfCols * $i;
+      }
+
+      [class~='no-offset@#{$media}'] {
+         margin-left: 0;
+      }
+
+      [class~='no-gutter@#{$media}'],
+      [class~='no-gap@#{$media}'] {
+        margin-left: 0!important;
+        width: 100%!important;
+          > * {
+            padding-left: 0!important;
+            padding-top: 0!important;
+          }
+      }
+
+    }
+  }
+}
